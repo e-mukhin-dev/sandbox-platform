@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->json('services');
             $table->string('project_name')->nullable()->unique();
+            $table->timestamps();
 
             $table->text('error_message')->nullable();
         });
