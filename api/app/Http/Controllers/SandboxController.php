@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSandboxRequest;
 use App\Models\Sandbox;
+use App\Services\SandboxService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class SandboxController extends Controller
 {
@@ -20,5 +23,11 @@ class SandboxController extends Controller
             ->latest()
             ->get();
         return response()->json($sandboxes);
+    }
+
+    public function store(CreateSandboxRequest $request, SandboxService $sandboxService): JsonResponse
+    {
+        $sandbox = $sandboxService->create($request->validated());
+        return response()->json($sandbox, 201);
     }
 }

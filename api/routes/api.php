@@ -6,3 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/services', [ServicesController::class, 'index']);
 Route::get('/sandboxes', [SandboxController::class, 'index']);
+Route::post('/sandboxes', [SandboxController::class, 'store']);
