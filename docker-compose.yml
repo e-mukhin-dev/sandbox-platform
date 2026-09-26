@@ -21,6 +21,7 @@ services:
       - ./api:/var/www
     working_dir: /var/www
     command: php artisan queue:work redis --queue=sandboxes --sleep=3 --tries=3 --timeout=90
+    restart: unless-stopped
     depends_on:
       - postgres
       - redis
