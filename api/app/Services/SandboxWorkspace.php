@@ -33,5 +33,9 @@ class SandboxWorkspace
 
         $this->file->ensureDirectoryExists($directory . '/app/public/');
         $this->file->copy(storage_path("default-pages/index.html"), $directory . '/app/public/index.html');
+
+        $sandbox->update([
+            'status' => 'running'
+        ]);
     }
 }
