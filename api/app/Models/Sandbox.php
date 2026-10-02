@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sandbox extends Model
 {
-    protected $fillable = ['owner_email', 'status', 'services', 'project_name'];
+    protected $fillable = ['owner_email', 'status', 'services', 'project_name', 'error_message'];
 
     protected function casts(): array
     {

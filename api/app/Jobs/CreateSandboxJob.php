@@ -21,4 +21,16 @@ class CreateSandboxJob implements ShouldQueue
     {
         $sandbox->create($this->sandbox);
     }
+
+    public function failed(?Throwable $exception): void
+    {
+        $message = $exception instanceof ProcessFailedException
+            ? $exception->result->errorOutput()
+            : $exception?->getMessage();
+
+        $this->sandbox->update([
+            'status' => 'failed',
+            'error_message' => $message,
+        ]);
+    }
 }
