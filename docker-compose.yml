@@ -18,8 +18,9 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./api:/var/www
-    working_dir: /var/www
+      - ./api:/var/www/html
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /var/www/html
     command: php artisan queue:work redis --queue=sandboxes --sleep=3 --tries=3 --timeout=90
     restart: unless-stopped
     depends_on:

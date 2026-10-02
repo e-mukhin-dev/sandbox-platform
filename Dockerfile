@@ -1,5 +1,8 @@
 FROM php:8.3-cli
 
+COPY --from=docker:29-cli /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker:29-cli /usr/local/libexec/docker/cli-plugins/ /usr/local/libexec/docker/cli-plugins/
+
 WORKDIR /var/www
 
 RUN apt-get update && apt-get install -y \
