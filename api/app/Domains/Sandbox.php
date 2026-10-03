@@ -18,4 +18,11 @@ class Sandbox
 
         $this->composeService->up($sandbox);
     }
+
+    public function stop(\App\Models\Sandbox $sandbox): void
+    {
+        $this->composeService->stop($sandbox);
+
+        $this->sandboxWorkspace->setStatusStopped($sandbox);
+    }
 }

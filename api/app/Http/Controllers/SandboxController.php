@@ -30,4 +30,10 @@ class SandboxController extends Controller
         $sandbox = $sandboxService->create($request->validated());
         return response()->json($sandbox, 201);
     }
+
+    public function stop(Sandbox $sandbox, SandboxService $sandboxService): JsonResponse
+    {
+        $sandbox = $sandboxService->stop($sandbox);
+        return response()->json($sandbox, 202);
+    }
 }

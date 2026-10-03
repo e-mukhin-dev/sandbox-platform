@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\CreateSandboxJob;
+use App\Jobs\StopSandboxJob;
 use App\Models\Sandbox;
 use Illuminate\Support\Facades\Log;
 
@@ -23,5 +24,11 @@ class SandboxService
 
             throw $exception;
         }
+    }
+
+    public function stop(Sandbox $sandbox): Sandbox
+    {
+        StopSandboxJob::dispatch($sandbox)->onQueue('sandboxes');
+        return $sandbox;
     }
 }
