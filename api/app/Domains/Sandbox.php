@@ -32,4 +32,11 @@ class Sandbox
 
         $this->sandboxWorkspace->setStatusRunning($sandbox);
     }
+
+    public function start(\App\Models\Sandbox $sandbox): void
+    {
+        $this->composeService->start($sandbox);
+
+        $this->sandboxWorkspace->setStatusRunning($sandbox);
+    }
 }

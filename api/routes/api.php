@@ -9,3 +9,4 @@ Route::get('/sandboxes', [SandboxController::class, 'index']);
 Route::post('/sandboxes', [SandboxController::class, 'store']);
 Route::post('/sandboxes/{sandbox}/stop', [SandboxController::class, 'stop']);
 Route::post('/sandboxes/{sandbox}/restart', [SandboxController::class, 'restart']);
+Route::post('/sandboxes/{sandbox}/start', [SandboxController::class, 'start']);

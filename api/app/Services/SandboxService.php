@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Jobs\CreateSandboxJob;
 use App\Jobs\RestartSandboxJob;
 use App\Jobs\StopSandboxJob;
+use App\Jobs\StartSandboxJob;
 use App\Models\Sandbox;
 use Illuminate\Support\Facades\Log;
 
@@ -36,6 +37,13 @@ class SandboxService
     public function restart(Sandbox $sandbox): Sandbox
     {
         RestartSandboxJob::dispatch($sandbox)->onQueue('sandboxes');
+
+        return $sandbox;
+    }
+
+    public function start(Sandbox $sandbox): Sandbox
+    {
+        StartSandboxJob::dispatch($sandbox)->onQueue('sandboxes');
 
         return $sandbox;
     }
