@@ -42,4 +42,20 @@ class DockerComposeService
             ])
             ->throw();
     }
+
+    public function restart(Sandbox $sandbox): void
+    {
+        $directory = storage_path("projects/sandboxes/{$sandbox->project_name}");
+
+        Process::path($directory)
+            ->timeout(60)
+            ->run([
+                '/usr/local/bin/docker', 'compose',
+                '--project-name', $sandbox->project_name,
+                '--file', 'docker-compose.yml',
+                '--env-file', '.env',
+                'restart',
+            ])
+            ->throw();
+    }
 }

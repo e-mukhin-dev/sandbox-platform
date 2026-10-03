@@ -45,4 +45,11 @@ class SandboxWorkspace
             'status' => 'stopped'
         ]);
     }
+
+    public function setStatusRunning(Sandbox $sandbox): void
+    {
+        $sandbox->update([
+            'status' => 'running',
+        ]);
+    }
 }

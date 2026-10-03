@@ -25,4 +25,11 @@ class Sandbox
 
         $this->sandboxWorkspace->setStatusStopped($sandbox);
     }
+
+    public function restart(\App\Models\Sandbox $sandbox): void
+    {
+        $this->composeService->restart($sandbox);
+
+        $this->sandboxWorkspace->setStatusRunning($sandbox);
+    }
 }

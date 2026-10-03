@@ -36,4 +36,10 @@ class SandboxController extends Controller
         $sandbox = $sandboxService->stop($sandbox);
         return response()->json($sandbox, 202);
     }
+
+    public function restart(Sandbox $sandbox, SandboxService $sandboxService): JsonResponse
+    {
+        $sandbox = $sandboxService->restart($sandbox);
+        return response()->json($sandbox, 202);
+    }
 }
