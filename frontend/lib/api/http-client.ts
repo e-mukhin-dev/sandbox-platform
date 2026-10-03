@@ -19,10 +19,6 @@ export const ENDPOINTS = {
   restart: (id: string) => `/api/sandboxes/${encodeURIComponent(id)}/restart`,
 } as const
 
-interface LaravelResource<T> {
-  data: T
-}
-
 interface LaravelValidationError {
   message: string
   errors?: Record<string, string[]>
@@ -43,22 +39,60 @@ async function request<T>(baseUrl: string, path: string, init?: RequestInit): Pr
     throw new ApiError(body?.message ?? response.statusText, response.status, body?.errors)
   }
 
-  const body = (await response.json()) as LaravelResource<T>
-  return body.data
+    return (await response.json()) as T
 }
 
 export function createHttpSandboxApi(baseUrl = ''): SandboxApi {
-  return {
-    listSandboxes: () => request<Sandbox[]>(baseUrl, ENDPOINTS.sandboxes),
-    listServices: () => request<ServiceDefinition[]>(baseUrl, ENDPOINTS.services),
-    createSandbox: (payload: CreateSandboxPayload) =>
-      request<AcceptedSandbox>(baseUrl, ENDPOINTS.sandboxes, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      }),
-    startSandbox: (id) => request<AcceptedSandbox>(baseUrl, ENDPOINTS.start(id), { method: 'POST' }),
-    stopSandbox: (id) => request<AcceptedSandbox>(baseUrl, ENDPOINTS.stop(id), { method: 'POST' }),
-    restartSandbox: (id) =>
-      request<AcceptedSandbox>(baseUrl, ENDPOINTS.restart(id), { method: 'POST' }),
-  }
+    async function sandboxRequest(
+        path: string,
+        init?: RequestInit,
+    ): Promise<Sandbox> {
+        const sandbox = await request<SandboxResponse>(baseUrl, path, init)
+
+        return normalizeSandbox(sandbox)
+    }
+
+    return {
+        async listSandboxes() {
+            const sandboxes = await request<SandboxResponse[]>(
+                baseUrl,
+                ENDPOINTS.sandboxes,
+            )
+
+            return sandboxes.map(normalizeSandbox)
+        },
+
+        listServices: () =>
+            request<ServiceDefinition[]>(baseUrl, ENDPOINTS.services),
+
+        createSandbox: (payload: CreateSandboxPayload) =>
+            sandboxRequest(ENDPOINTS.sandboxes, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            }),
+
+        startSandbox: (id) =>
+            sandboxRequest(ENDPOINTS.start(id), { method: 'POST' }),
+
+        stopSandbox: (id) =>
+            sandboxRequest(ENDPOINTS.stop(id), { method: 'POST' }),
+
+        restartSandbox: (id) =>
+            sandboxRequest(ENDPOINTS.restart(id), { method: 'POST' }),
+    }
+}
+
+type SandboxResponse = Omit<Sandbox, 'id' | 'error'> & {
+    id: string | number
+    error_message?: string | null
+}
+
+function normalizeSandbox(sandbox: SandboxResponse): Sandbox {
+    const { error_message, ...rest } = sandbox
+
+    return {
+        ...rest,
+        id: String(sandbox.id),
+        error: error_message ?? null,
+    }
 }

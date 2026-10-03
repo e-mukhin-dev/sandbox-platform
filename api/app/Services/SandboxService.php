@@ -16,6 +16,9 @@ class SandboxService
         try {
             $sandbox = Sandbox::create($sandboxData);
             CreateSandboxJob::dispatch($sandbox)->onQueue('sandboxes');
+            $sandbox->update([
+                'status' => 'creating'
+            ]);
             return $sandbox;
         }catch (\Throwable $exception) {
             Log::error('Sandbox creation error', [

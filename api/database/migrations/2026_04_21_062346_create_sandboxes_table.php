@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('owner_email');
-            $table->string('status')->default('pending');
+            $table->string('status');
             $table->json('services');
             $table->string('project_name')->nullable()->unique();
             $table->timestamps();

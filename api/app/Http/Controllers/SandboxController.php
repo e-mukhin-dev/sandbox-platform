@@ -14,11 +14,14 @@ class SandboxController extends Controller
     {
         $sandboxes = Sandbox::query()
             ->select([
+                'id',
+                'status',
                 'project_name',
                 'owner_email',
                 'services',
                 'created_at',
                 'updated_at',
+                'error_message'
             ])
             ->latest()
             ->get();
