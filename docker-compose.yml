@@ -52,6 +52,28 @@ services:
       - frontend_node_modules:/app/node_modules
       - frontend_next:/app/.next
 
+  traefik:
+    image: traefik:v3.7
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=sandbox-proxy"
+      - "--entrypoints.web.address=:80"
+      - "--accesslog=true"
+      - "--log.level=INFO"
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - sandbox-proxy
+
+networks:
+  sandbox-proxy:
+    name: sandbox-proxy
+    driver: bridge
+
 volumes:
   frontend_node_modules:
   frontend_next:

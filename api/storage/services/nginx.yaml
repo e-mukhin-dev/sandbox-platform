@@ -8,3 +8,19 @@ services:
       - ${SANDBOX_ROOT}/${SANDBOX_NAME}/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
+    networks:
+      - default
+      - sandbox-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=sandbox-proxy"
+      - "traefik.http.routers.sandbox-${SANDBOX_NAME}.rule=Host(`${SANDBOX_HOST}`)"
+      - "traefik.http.routers.sandbox-${SANDBOX_NAME}.entrypoints=web"
+      - "traefik.http.routers.sandbox-${SANDBOX_NAME}.service=sandbox-${SANDBOX_NAME}"
+      - "traefik.http.services.sandbox-${SANDBOX_NAME}.loadbalancer.server.port=80"
+
+networks:
+  default: { }
+  sandbox-proxy:
+    external: true
+    name: sandbox-proxy

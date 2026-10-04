@@ -17,7 +17,8 @@ class EnvBuilder
         $env = [
             'DB_PASSWORD' => Str::random(32),
             'SANDBOX_NAME' => $sandbox->project_name,
-            'SANDBOX_ROOT' => base_path("api/storage/projects/sandboxes")
+            'SANDBOX_ROOT' => base_path("api/storage/projects/sandboxes"),
+            'SANDBOX_HOST' => $sandbox->project_name . '.' . config('sandbox.base_domain')
         ];
         $envString = "";
         foreach ($env as $name => $value) {
