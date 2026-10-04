@@ -23,6 +23,7 @@ export interface Sandbox {
   error: string | null
   created_at: string
   updated_at: string
+  url: string
 }
 
 export interface ServiceDefinition {

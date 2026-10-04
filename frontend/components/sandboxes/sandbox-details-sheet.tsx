@@ -105,7 +105,13 @@ function DetailsBody({
             These capabilities are planned and not yet available for sandboxes.
           </p>
           <ul className="divide-y rounded-md border text-[13px]">
-            {['Public URL', 'SSH access', 'Mail testing'].map((item) => (
+              <li key="Public URL" className="flex items-center justify-between px-3 py-2">
+                  <span className="text-muted-foreground">Public URL</span>
+                  <span className="rounded-sm border border-dashed px-1.5 py-px text-[11px] text-muted-foreground">
+                    <a href={sandbox.url}>{sandbox.url}</a>
+                </span>
+              </li>
+            {['SSH access', 'Mail testing'].map((item) => (
               <li key={item} className="flex items-center justify-between px-3 py-2">
                 <span className="text-muted-foreground">{item}</span>
                 <span className="rounded-sm border border-dashed px-1.5 py-px text-[11px] text-muted-foreground">
